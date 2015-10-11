@@ -1,0 +1,3 @@
+[submodule "pacmacs"]
+	path = pacmacs
+	url = git@github.com:rexim/pacmacs.el.git
