@@ -3,18 +3,16 @@ AtomanView = require './atoman-view'
 
 module.exports = Atoman =
   atomanView: null
-  modalPanel: null
   subscriptions: null
 
   activate: (state) ->
     @atomanView = new AtomanView(state.atomanViewState)
-    @modalPanel = atom.workspace.addModalPanel(item: @atomanView.getElement(), visible: false)
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atoman:toggle': => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atoman:start': => @start()
 
   deactivate: ->
     @modalPanel.destroy()
@@ -24,10 +22,5 @@ module.exports = Atoman =
   serialize: ->
     atomanViewState: @atomanView.serialize()
 
-  toggle: ->
-    console.log 'Atoman was toggled!'
-
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()
+  start: ->
+    # TODO: Start the game

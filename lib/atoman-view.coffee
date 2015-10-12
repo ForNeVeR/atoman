@@ -1,22 +1,55 @@
+fs = require 'fs'
+path = require 'path'
+
 module.exports =
-class AtomanView
-  constructor: (serializedState) ->
-    # Create root element
-    @element = document.createElement('div')
-    @element.classList.add('atoman')
+  class AtomanView
+    @@spriteNames = [
+      'Pacman-Chomping-Down'
+      'Pacman-Chomping-Left'
+      'Pacman-Chomping-Right'
+      'Pacman-Chomping-Up'
+      'Pacman-Death'
+      'Pill'
+      'Red-Ghost-Down'
+      'Red-Ghost-Left'
+      'Red-Ghost-Right'
+      'Red-Ghost-Up'
+    ]
 
-    # Create message element
-    message = document.createElement('div')
-    message.textContent = "The Atoman package is Alive! It's ALIVE!"
-    message.classList.add('message')
-    @element.appendChild(message)
+    @canvas = null
+    @map = null
 
-  # Returns an object that can be retrieved when package is activated
-  serialize: ->
+    constructor: (serializedState) ->
+      @canvas = document.createElement 'canvas'
+      @canvas.classList.add 'atoman'
 
-  # Tear down any state and detach
-  destroy: ->
-    @element.remove()
+      @load().then(
+        => @startGame()
+        => showError())
 
-  getElement: ->
-    @element
+    serialize: ->
+
+    destroy: ->
+      @canvas.remove()
+
+    load: ->
+      console.log 'Atoman', 'Loading game...'
+      Promise.all @loadMap(), @loadSprites()
+
+    loadMap: ->
+      filePath = path.join(
+        atom.packages.resolvePackagePath 'atoman'
+        'pacmacs/maps/map01.txt')
+      new Promise (resolve, reject) =>
+        fs.readFile filePath, (error, data) =>
+          if error
+            reject error
+          else
+            console.log 'Atoman', 'Map loaded.', data
+            @map = data
+            resolve()
+          return
+        return
+
+    loadSprites: ->
+      # TODO: Load sprites.
