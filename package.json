@@ -5,7 +5,7 @@
   "description": "A short description of your package",
   "keywords": [],
   "scripts": {
-    "install": "tsd reinstall -s"
+    "install": "tsd reinstall -s && gulp install"
   },
   "activationCommands": {
     "atom-workspace": "atoman:start"
@@ -17,6 +17,10 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "tsd": "^0.6.5"
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.9.2",
+    "ts-node": "^0.2.4",
+    "tsd": "^0.6.5",
+    "typescript": "^1.6.2"
   }
 }

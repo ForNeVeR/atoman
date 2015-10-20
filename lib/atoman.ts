@@ -1,8 +1,6 @@
 /// <reference path="../typings/tsd.d.ts"/>
-// / <reference path="./atom.d.ts"/>
 
 import AtomanView = require('./atoman-view');
-//import atom = require('atom');
 
 var CompositeDisposable = atom.CompositeDisposable;
 
@@ -31,7 +29,7 @@ class Atoman {
   }
 
   start() {
-    // TODO: Start the game
+    console.log('atoman:start');
   }
 }
 

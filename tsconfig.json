@@ -19,15 +19,19 @@
         "!node_modules/**"
     ],
     "files": [
+        "Gulpfile.ts",
         "lib/atom.d.ts",
         "lib/atoman-view.ts",
         "lib/atoman.ts",
         "typings/atom/atom.d.ts",
         "typings/emissary/emissary.d.ts",
         "typings/es6-promise/es6-promise.d.ts",
+        "typings/gulp-typescript/gulp-typescript.d.ts",
+        "typings/gulp/gulp.d.ts",
         "typings/jquery/jquery.d.ts",
         "typings/mixto/mixto.d.ts",
         "typings/node/node.d.ts",
+        "typings/orchestrator/orchestrator.d.ts",
         "typings/pathwatcher/pathwatcher.d.ts",
         "typings/q/Q.d.ts",
         "typings/space-pen/space-pen.d.ts",
@@ -35,5 +39,6 @@
         "typings/text-buffer/text-buffer.d.ts",
         "typings/tsd.d.ts"
     ],
-    "exclude": []
+    "exclude": [],
+    "compileOnSave": false
 }
