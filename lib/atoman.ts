@@ -12,9 +12,9 @@ class Atoman {
     this.atomanView = new AtomanView(state.atomanViewState);
 
     this.subscriptions = new CompositeDisposable();
-    this.subscriptions.add(atom.commands.add, 'atom-workspace', {
+    this.subscriptions.add(atom.commands.add('atom-workspace', {
       'atoman:start': () => this.start()
-    });
+    }));
   }
 
   deactivate() {
