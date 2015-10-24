@@ -23,6 +23,7 @@
         "src/atom.d.ts",
         "src/atoman-view.ts",
         "src/atoman.ts",
+        "src/libxpm.d.ts",
         "typings/atom/atom.d.ts",
         "typings/emissary/emissary.d.ts",
         "typings/es6-promise/es6-promise.d.ts",

@@ -15,7 +15,9 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "libxpm": "0.0.1"
+  },
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-typescript": "^2.9.2",
