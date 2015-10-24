@@ -20,9 +20,9 @@
     ],
     "files": [
         "Gulpfile.ts",
-        "lib/atom.d.ts",
-        "lib/atoman-view.ts",
-        "lib/atoman.ts",
+        "src/atom.d.ts",
+        "src/atoman-view.ts",
+        "src/atoman.ts",
         "typings/atom/atom.d.ts",
         "typings/emissary/emissary.d.ts",
         "typings/es6-promise/es6-promise.d.ts",

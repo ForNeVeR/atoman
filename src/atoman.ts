@@ -33,4 +33,4 @@ class Atoman {
   }
 }
 
-export = Atoman;
+export = new Atoman();
