@@ -14,6 +14,7 @@ interface SpriteFrameInfo {
 
 interface SpriteInfo {
   frames: { [name: string]: SpriteFrameInfo };
+  meta: { size: { w: number; h: number; } }
 }
 
 class Sprite {
@@ -51,19 +52,34 @@ class Sprite {
     return Promise.all([
       ResourceManager.textFile(`pacmacs/sprites/${name}.xpm`),
       ResourceManager.textFile(`pacmacs/sprites/${name}.json`)])
-      .then(([image, info]) => {
-        var xpmData = image.replace(/\r\n/g, '\n');
+      .then(([imageData, infoData]) => {
+        let xpmData = imageData.replace(/\r\n/g, '\n');
+        let info = JSON.parse(infoData);
+        let image = Sprite.loadSpriteImageFrom(info, xpmData);
         return {
           name,
-          image: libxpm.xpm_to_img(xpmData),
-          info: <SpriteInfo> JSON.parse(info)
+          info,
+          image
         };
       });
   }
 
+  static loadSpriteImageFrom(info: SpriteInfo, xpmData: string) {
+    let image = libxpm.xpm_to_img(xpmData);
+
+    // Need to resample the image.
+    let canvas = document.createElement('canvas');
+    let context = canvas.getContext('2d');
+    let size = info.meta.size;
+    context.drawImage(image, 0, 0, size.w, size.h);
+
+    image.src = canvas.toDataURL();
+    return image;
+  }
+
   name: string;
-  image: HTMLImageElement;
   info: SpriteInfo;
+  image: HTMLImageElement;
 }
 
 export = Sprite;
