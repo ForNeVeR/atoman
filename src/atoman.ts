@@ -11,7 +11,7 @@ class Atoman {
   activate(state) {
     this.view = new AtomanView(state.atomanViewState);
     this.modalPanel = atom.workspace.addModalPanel({
-      item: this.view.canvas,
+      item: this.view.element,
       visible: false
     });
 

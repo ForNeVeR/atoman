@@ -12,6 +12,21 @@ class Cell {
   constructor(type: CellType) {
     this.type = type;
   }
+
+  getSpriteName() {
+    switch (this.type) {
+      case CellType.Empty:
+        return null;
+      case CellType.Player:
+        return 'Pacman-Chomping-Right';
+      case CellType.Ghost:
+        return 'Red-Ghost-Right';
+      case CellType.Wall:
+        return 'Wall';
+      case CellType.Pill:
+        return 'Pill';
+    }
+  }
 }
 
 class Map {
@@ -21,6 +36,10 @@ class Map {
     let width = 0;
     lines.forEach(line => {
       line = line.trim();
+      if (line === '') {
+        return;
+      }
+
       if (line.length > width) {
         width = line.length;
       }
@@ -36,6 +55,8 @@ class Map {
       }
     });
 
+    map.width = width;
+    map.height = map.cells.length;
     map.cells.forEach(line => {
       while (line.length < width) {
         line.push(new Cell(CellType.Empty));
@@ -67,6 +88,8 @@ class Map {
   }
 
   cells: Cell[][];
+  width: number;
+  height: number;
 }
 
 export = Map;
