@@ -5,11 +5,16 @@ import AtomanView = require('./atoman-view');
 var CompositeDisposable = atom.CompositeDisposable;
 
 class Atoman {
-  atomanView: AtomanView;
+  modalPanel: AtomCore.Panel;
+  view: AtomanView;
   subscriptions: AtomCore.CompositeDisposable;
 
   activate(state) {
-    this.atomanView = new AtomanView(state.atomanViewState);
+    this.view = new AtomanView(state.atomanViewState);
+    this.modalPanel = atom.workspace.addModalPanel({
+      item: this.view.canvas,
+      visible: false
+    });
 
     this.subscriptions = new CompositeDisposable();
     this.subscriptions.add(atom.commands.add('atom-workspace', {
@@ -18,18 +23,19 @@ class Atoman {
   }
 
   deactivate() {
-    this.subscriptions.dispose()
-    this.atomanView.destroy()
+    this.modalPanel.destroy();
+    this.subscriptions.dispose();
+    this.view.destroy();
   }
 
   serialize() {
     return {
-      atomanViewState: this.atomanView.serialize()
+      atomanViewState: this.view.serialize()
     };
   }
 
   start() {
-    console.log('atoman:start');
+    this.modalPanel.show();
   }
 }
 

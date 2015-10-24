@@ -4,6 +4,10 @@ declare module AtomCore {
     dispose(): void;
   }
 
+  interface Panel {
+    destroy(): void;
+  }
+
   interface IAtom {
     CompositeDisposable: new () => CompositeDisposable;
   }
