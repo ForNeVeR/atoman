@@ -1,5 +1,9 @@
-# atoman package
+# atoman package [![Status Umbra](https://img.shields.io/badge/status-umbra-red.svg)](https://github.com/ForNeVeR/andivionian-status-classifier)
 
-A short description of your package.
+Atoman is a [Pacmacs][pacmacs] clone for Emacs.
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+**It is still unfinished and not playable.**
+
+![A screenshot of the current state](./docs/screen-prealpha.png)
+
+[pacmacs]: https://github.com/rexim/pacmacs.el
