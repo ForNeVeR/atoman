@@ -24,6 +24,8 @@
         "src/atoman-view.ts",
         "src/atoman.ts",
         "src/libxpm.d.ts",
+        "src/resource-manager.ts",
+        "src/sprite.ts",
         "typings/atom/atom.d.ts",
         "typings/emissary/emissary.d.ts",
         "typings/es6-promise/es6-promise.d.ts",

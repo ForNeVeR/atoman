@@ -1,6 +1,5 @@
-import fs = require('fs');
-import path = require('path');
-import libxpm = require('libxpm');
+import ResourceManager = require('./resource-manager');
+import Sprite = require('./sprite');
 
 class AtomanView {
   static spriteNames = [
@@ -16,24 +15,8 @@ class AtomanView {
     'Red-Ghost-Up'
   ];
 
-  static loadResource(fileName: string): Promise<Buffer> {
-    var filePath = path.join(
-      atom.packages.resolvePackagePath('atoman'),
-      fileName);
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(filePath, (error, data) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  }
-
   canvas: HTMLCanvasElement;
-  map: Buffer;
+  map: string;
   sprites: { [name: string]: HTMLImageElement };
 
   constructor(serializedState) {
@@ -58,8 +41,8 @@ class AtomanView {
       this.loadSprites().then(sprites => this.sprites = sprites)]);
   }
 
-  loadMap(): Promise<Buffer> {
-    return AtomanView.loadResource('pacmacs/maps/map01.txt');
+  loadMap(): Promise<string> {
+    return ResourceManager.textFile('pacmacs/maps/map01.txt');
   }
 
   loadSprites(): Promise<{ [name: string]: HTMLImageElement }> {
@@ -69,10 +52,8 @@ class AtomanView {
     });
   }
 
-  loadSprite(name: string) {
-    return AtomanView.loadResource(`pacmacs/sprites/${name}.xpm`).then((data) => {
-      return libxpm.xpm_to_img(data.toString().replace(/\r\n/g, '\n'));
-    });
+  loadSprite(name: string): Promise<Sprite> {
+    return Sprite.load(name);
   }
 }
 
