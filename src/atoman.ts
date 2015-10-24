@@ -1,13 +1,12 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
 import AtomanView = require('./atoman-view');
-
-var CompositeDisposable = atom.CompositeDisposable;
+import {CompositeDisposable} from 'atom';
 
 class Atoman {
   modalPanel: AtomCore.Panel;
   view: AtomanView;
-  subscriptions: AtomCore.CompositeDisposable;
+  subscriptions: CompositeDisposable;
 
   activate(state) {
     this.view = new AtomanView(state.atomanViewState);

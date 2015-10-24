@@ -1,18 +1,16 @@
 declare module AtomCore {
-  interface CompositeDisposable {
-    add(disposable: Disposable): void;
-    dispose(): void;
-  }
-
   interface Panel {
     destroy(): void;
   }
 
-  interface IAtom {
-    CompositeDisposable: new () => CompositeDisposable;
-  }
-
   interface ICommandRegistry {
     add(selector: string, commands: { [name: string]: (event: any) => void }): Disposable;
+  }
+}
+
+declare module 'atom' {
+  export class CompositeDisposable {
+    add(disposable: AtomCore.Disposable): void;
+    dispose(): void;
   }
 }
