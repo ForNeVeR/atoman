@@ -24,6 +24,7 @@
         "src/atoman-view.ts",
         "src/atoman.ts",
         "src/libxpm.d.ts",
+        "src/map.ts",
         "src/resource-manager.ts",
         "src/sprite.ts",
         "typings/atom/atom.d.ts",

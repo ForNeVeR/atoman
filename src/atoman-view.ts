@@ -1,3 +1,4 @@
+import Map = require('./map');
 import ResourceManager = require('./resource-manager');
 import Sprite = require('./sprite');
 
@@ -16,7 +17,7 @@ class AtomanView {
   ];
 
   canvas: HTMLCanvasElement;
-  map: string;
+  map: Map;
   sprites: { [name: string]: HTMLImageElement };
 
   constructor(serializedState) {
@@ -24,8 +25,15 @@ class AtomanView {
     this.canvas.classList.add('atoman');
 
     this.load().then(
-      () => { console.log('Atoman loaded') },
+      () => {
+        console.log('Atoman loaded');
+        this.render();
+      },
       (error) => { console.error(error); });
+  }
+
+  render() {
+
   }
 
   serialize() {
@@ -41,8 +49,8 @@ class AtomanView {
       this.loadSprites().then(sprites => this.sprites = sprites)]);
   }
 
-  loadMap(): Promise<string> {
-    return ResourceManager.textFile('pacmacs/maps/map01.txt');
+  loadMap(): Promise<Map> {
+    return ResourceManager.textFile('pacmacs/maps/map01.txt').then(Map.parse);
   }
 
   loadSprites(): Promise<{ [name: string]: HTMLImageElement }> {
