@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../../typings/tsd.d.ts"/>
 
 import AtomanView = require('./atoman-view');
 import {CompositeDisposable} from 'atom';
@@ -9,7 +9,7 @@ class Atoman {
   subscriptions: CompositeDisposable;
 
   activate(state) {
-    this.view = new AtomanView(state.atoman ViewState);
+    this.view = new AtomanView(state.atomanViewState);
     this.modalPanel = atom.workspace.addModalPanel({
       item: this.view.element,
       visible: false
