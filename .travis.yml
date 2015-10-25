@@ -1,4 +1,4 @@
-language: js
+language: objective-c # Dunno why exactly this have to be objective-c ~ F
 
 notifications:
   email:
