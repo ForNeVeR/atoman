@@ -9,7 +9,7 @@ class Atoman {
   subscriptions: CompositeDisposable;
 
   activate(state) {
-    this.view = new AtomanView(state.atomanViewState);
+    this.view = new AtomanView(state.atoman ViewState);
     this.modalPanel = atom.workspace.addModalPanel({
       item: this.view.element,
       visible: false
