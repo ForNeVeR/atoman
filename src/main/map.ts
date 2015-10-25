@@ -6,29 +6,6 @@ enum CellType {
   Pill
 }
 
-class Cell {
-  type: CellType;
-
-  constructor(type: CellType) {
-    this.type = type;
-  }
-
-  getSpriteName() {
-    switch (this.type) {
-      case CellType.Empty:
-        return null;
-      case CellType.Player:
-        return 'Pacman-Chomping-Right';
-      case CellType.Ghost:
-        return 'Red-Ghost-Right';
-      case CellType.Wall:
-        return 'Wall';
-      case CellType.Pill:
-        return 'Pill';
-    }
-  }
-}
-
 class Map {
   static parse(data: string): Map {
     let lines = data.split('\n');
@@ -50,7 +27,7 @@ class Map {
       for (let i = 0; i < line.length; ++i) {
         var type = Map.parseCellType(line[i]);
         if (type != null) {
-          row.push(new Cell(type));
+          row.push(new Map.Cell(type));
         }
       }
     });
@@ -59,7 +36,7 @@ class Map {
     map.height = map.cells.length;
     map.cells.forEach(line => {
       while (line.length < width) {
-        line.push(new Cell(CellType.Empty));
+        line.push(new Map.Cell(CellType.Empty));
       }
     });
 
@@ -87,9 +64,40 @@ class Map {
     this.cells = [];
   }
 
-  cells: Cell[][];
+  cells: Map.Cell[][];
   width: number;
   height: number;
+}
+
+module Map {
+  export class Cell {
+    type: CellType;
+    frameNumber: number;
+
+    constructor(type: CellType) {
+      this.type = type;
+      this.frameNumber = 0;
+    }
+
+    getSpriteName() {
+      switch (this.type) {
+        case CellType.Empty:
+          return null;
+        case CellType.Player:
+          return 'Pacman-Chomping-Right';
+        case CellType.Ghost:
+          return 'Red-Ghost-Right';
+        case CellType.Wall:
+          return 'Wall';
+        case CellType.Pill:
+          return 'Pill';
+      }
+    }
+
+    getFrameNumber() {
+      return this.frameNumber;
+    }
+  }
 }
 
 export = Map;

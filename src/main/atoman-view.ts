@@ -57,7 +57,7 @@ class AtomanView {
         let spriteName = cell.getSpriteName();
         let sprite = this.sprites[spriteName];
         if (sprite != null) {
-          this.renderSprite(context, sprite, x, y);
+          this.renderSprite(context, sprite, cell, x, y);
         }
       });
     });
@@ -101,12 +101,28 @@ class AtomanView {
   renderSprite(
     context: CanvasRenderingContext2D,
     sprite: Sprite,
+    cell: Map.Cell,
     x: number,
     y: number) {
+    let frame = this.getFrame(sprite, cell.getFrameNumber()).frame;
     context.drawImage(
       sprite.image,
+      frame.x,
+      frame.y,
+      frame.w,
+      frame.h,
       x * AtomanView.spriteSize,
-      y * AtomanView.spriteSize);
+      y * AtomanView.spriteSize,
+      AtomanView.spriteSize,
+      AtomanView.spriteSize);
+  }
+
+  getFrame(sprite: Sprite, number: number) {
+    let info = sprite.info;
+    let frames = Object.keys(info.frames).map(name => {
+      return info.frames[name];
+    });
+    return frames[number % frames.length];
   }
 }
 
