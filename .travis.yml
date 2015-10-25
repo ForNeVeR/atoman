@@ -1,0 +1,11 @@
+language: objective-c # Dunno why exactly this have to be objective-c ~ F
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
+
+git:
+  depth: 10

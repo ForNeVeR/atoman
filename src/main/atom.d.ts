@@ -6,6 +6,10 @@ declare module AtomCore {
   interface ICommandRegistry {
     add(selector: string, commands: { [name: string]: (event: any) => void }): Disposable;
   }
+
+  interface IWorkspace {
+    panelForItem(item: HTMLElement): Panel;
+  }
 }
 
 declare module 'atom' {
