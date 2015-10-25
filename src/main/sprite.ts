@@ -77,6 +77,15 @@ class Sprite {
     return image;
   }
 
+  static getFrames(sprite: Sprite) {
+    let info = sprite.info;
+    let frames = Object.keys(info.frames).map(name => {
+      return info.frames[name];
+    });
+
+    return frames;
+  }
+
   name: string;
   info: SpriteInfo;
   image: HTMLImageElement;

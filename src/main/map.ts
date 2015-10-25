@@ -1,3 +1,5 @@
+import Sprite = require('./sprite');
+
 enum CellType {
   Empty,
   Player,
@@ -60,23 +62,33 @@ class Map {
     return null;
   }
 
+  cells: Map.Cell[][];
+  width: number;
+  height: number;
+
   constructor() {
     this.cells = [];
   }
 
-  cells: Map.Cell[][];
-  width: number;
-  height: number;
+  forEachCell(callback: (cell: Map.Cell, x: number, y: number) => void) {
+    this.cells.forEach((line, y) =>{
+      line.forEach((cell, x) => {
+        callback(cell, x, y);
+      });
+    });
+  }
 }
 
 module Map {
   export class Cell {
     type: CellType;
-    frameNumber: number;
+    timeFromFrameStart: number;
+    frameIndex: number;
 
     constructor(type: CellType) {
       this.type = type;
-      this.frameNumber = 0;
+      this.timeFromFrameStart = 0;
+      this.frameIndex = 0;
     }
 
     getSpriteName() {
@@ -95,7 +107,34 @@ module Map {
     }
 
     getFrameNumber() {
-      return this.frameNumber;
+      return this.frameIndex;
+    }
+
+    update(delta: number, sprite: Sprite) {
+      if (this.type === CellType.Empty) {
+        return;
+      }
+
+      let frames = Sprite.getFrames(sprite);
+      let frame = frames[this.frameIndex];
+      if (frame.duration == 0) { // Static frame
+        return;
+      }
+
+      let currentTime = this.timeFromFrameStart;
+      while (delta > 0) {
+        let step = Math.min(frame.duration - currentTime, delta);
+        delta -= step;
+        currentTime += step;
+
+        if (currentTime >= frame.duration) {
+          currentTime -= frame.duration;
+          this.frameIndex = (this.frameIndex + 1) % frames.length;
+          frame = frames[this.frameIndex];
+        }
+      }
+
+      this.timeFromFrameStart = currentTime;
     }
   }
 }

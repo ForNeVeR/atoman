@@ -22,6 +22,7 @@ class AtomanView {
   canvas: HTMLCanvasElement;
   map: Map;
   sprites: { [name: string]: Sprite };
+  time: number = null;
 
   constructor(serializedState) {
     this.element = document.createElement('div');
@@ -31,7 +32,8 @@ class AtomanView {
       () => {
         console.log('Atoman loaded');
         this.initCanvas();
-        this.render();
+
+        window.requestAnimationFrame((time) => this.update(time));
       },
       (error) => { console.error(error); });
   }
@@ -50,16 +52,28 @@ class AtomanView {
     this.element.appendChild(this.canvas);
   }
 
+  update(time: number) {
+    if (this.time !== null) {
+      let delta = time - this.time;
+      this.map.forEachCell((cell, x, y) => {
+        let sprite = this.getSprite(cell);
+        cell.update(delta, sprite);
+      });
+    }
+
+    this.time = time;
+    this.render();
+
+    requestAnimationFrame((time) => this.update(time));
+  }
+
   render() {
     let context = this.canvas.getContext('2d');
-    this.map.cells.forEach((line, y) => {
-      line.forEach((cell, x) => {
-        let spriteName = cell.getSpriteName();
-        let sprite = this.sprites[spriteName];
-        if (sprite != null) {
-          this.renderSprite(context, sprite, cell, x, y);
-        }
-      });
+    this.map.forEachCell((cell, x, y) => {
+      let sprite = this.getSprite(cell);
+      if (sprite != null) {
+        this.renderSprite(context, sprite, cell, x, y);
+      }
     });
   }
 
@@ -117,11 +131,13 @@ class AtomanView {
       AtomanView.spriteSize);
   }
 
+  getSprite(cell: Map.Cell): Sprite {
+    let spriteName = cell.getSpriteName();
+    return this.sprites[spriteName];
+  }
+
   getFrame(sprite: Sprite, number: number) {
-    let info = sprite.info;
-    let frames = Object.keys(info.frames).map(name => {
-      return info.frames[name];
-    });
+    let frames = Sprite.getFrames(sprite);
     return frames[number % frames.length];
   }
 }
