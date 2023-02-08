@@ -16,8 +16,20 @@ intellij {
   type.set("IC")
 }
 
+dependencies {
+  implementation("edu.illinois.library:imageio-xpm:1.0.1")
+}
+
 tasks {
   withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
+  }
+
+  processResources {
+    from("pacmacs/sprites/") {
+      include("*.xpm")
+      include("LICENSE.md")
+      into("sprites")
+    }
   }
 }
