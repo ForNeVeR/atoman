@@ -6,20 +6,15 @@ import com.intellij.codeInsight.hints.*
 import com.intellij.codeInsight.hints.presentation.BasePresentation
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.TextAttributes
-import com.intellij.openapi.rd.util.launchIOBackground
 import com.intellij.openapi.rd.util.launchOnUi
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.rd.util.lifetime.Lifetime
 import com.jetbrains.rd.util.reactive.adviseWithPrev
-import edu.illinois.library.imageio.xpm.XPMImageReaderSpi
-import kotlinx.coroutines.delay
 import me.fornever.atoman.AtomanBundle
 import me.fornever.atoman.AtomanLifetimeProvider
 import me.fornever.atoman.game.GameController
-import me.fornever.atoman.game.Loaded
 import java.awt.Graphics2D
-import javax.imageio.spi.IIORegistry
 import javax.swing.JPanel
 
 class InlayGameFieldProvider : InlayHintsProvider<NoSettings> {

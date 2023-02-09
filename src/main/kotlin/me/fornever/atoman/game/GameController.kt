@@ -1,8 +1,10 @@
 package me.fornever.atoman.game
 
 import com.intellij.util.ui.UIUtil
-import com.jetbrains.rd.util.lifetime.Lifetime
-import com.jetbrains.rd.util.reactive.*
+import com.jetbrains.rd.util.reactive.IPropertyView
+import com.jetbrains.rd.util.reactive.ISource
+import com.jetbrains.rd.util.reactive.Property
+import com.jetbrains.rd.util.reactive.map
 import edu.illinois.library.imageio.xpm.XPMImageReaderSpi
 import kotlinx.coroutines.delay
 import java.awt.Color
