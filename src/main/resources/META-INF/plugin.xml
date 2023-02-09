@@ -26,6 +26,6 @@
        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
   <extensions defaultExtensionNs="com.intellij">
     <codeInsight.inlayProvider language="TEXT"
-                               implementationClass="me.fornever.atoman.render.InlayGameFieldProvider" />
+                               implementationClass="me.fornever.atoman.inlay.InlayGameFieldProvider" />
   </extensions>
 </idea-plugin>
