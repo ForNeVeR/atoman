@@ -3,6 +3,7 @@ package me.fornever.atoman.map
 private data class Map(val cells: List<List<Cell>>, val width: Int, val height: Int) {
 
     companion object {
+
         fun parse(data: String): Map {
             val lines = data.split('\n')
             val cells = mutableListOf<MutableList<Cell>>()
@@ -15,29 +16,41 @@ private data class Map(val cells: List<List<Cell>>, val width: Int, val height: 
                 }
 
                 if (trimmedLine.length > width) {
-                    width = trimmedLine.length;
+                    width = trimmedLine.length
                 }
 
                 val row = mutableListOf<Cell>()
                 cells.add(row)
 
-                for (i in 0..trimmedLine.length - 1) {
-                    val cell = parseCellType(trimmedLine[i])
+                for (element in trimmedLine) {
+                    val type = parseCellType(element)
                     if (type != null) {
-                        row.push(new Map . Cell (type));
+                        row.add(Cell(type))
                     }
                 }
-            });
+            }
 
-            map.width = width;
-            map.height = map.cells.length;
-            map.cells.forEach(line => {
-                while (line.length < width) {
-                    line.push(new Map . Cell (Cell.Empty));
+            for (row in cells) {
+                while (row.size < width) {
+                    row.add(Cell(CellType.Empty))
                 }
-            });
+            }
 
-            return map;
+            return Map(
+                cells,
+                width,
+                cells.size
+            )
         }
+
+        private fun parseCellType(char: Char): CellType? =
+            when (char) {
+                ' ' -> CellType.Empty
+                '#' -> CellType.Wall
+                'o' -> CellType.Player
+                '.' -> CellType.Pill
+                'g' -> CellType.Ghost
+                else -> null
+            }
     }
 }
