@@ -1,7 +1,6 @@
 package me.fornever.atoman.sprites
 
 import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.openapi.rd.util.withIOBackgroundContext
 import com.intellij.util.ui.UIUtil
@@ -44,7 +43,7 @@ data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedIma
             UIUtil.createImage(null, 40, 40, BufferedImage.TYPE_INT_ARGB).apply {
                 for (y in 0..39) {
                     for (x in 0..39) {
-                        setRGB(x, y, 0x0000FF00)
+                        setRGB(x, y, 0xFF00FF00u.toInt())
                     }
                 }
             }
