@@ -28,6 +28,7 @@ tasks {
   processResources {
     from("pacmacs/sprites/") {
       include("*.xpm")
+      include("*.json")
       include("LICENSE.md")
       into("sprites")
     }

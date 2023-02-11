@@ -69,12 +69,12 @@ class GameFieldPresentation(lt: Lifetime) : BasePresentation() {
     }
 
     override val width: Int
-        get() = game.size.value.width
+        get() = game.renderSize.value.width
     override val height: Int
-        get() = game.size.value.height
+        get() = game.renderSize.value.height
 
     init {
-        game.size.adviseWithPrev(lt) { prev, cur ->
+        game.renderSize.adviseWithPrev(lt) { prev, cur ->
             if (prev.hasValue)
                 fireSizeChanged(prev.asNullable!!, cur)
         }

@@ -10,5 +10,5 @@ object LoadingMap : GameState
 object LoadingSprites : GameState
 data class Loaded(
     val map: GameMap,
-    val sprites: Map<CellType, Sprite>
+    val sprites: Map<CellType, Sprite?>
 ) : GameState

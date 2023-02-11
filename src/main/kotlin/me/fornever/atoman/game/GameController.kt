@@ -14,13 +14,17 @@ import java.awt.Graphics2D
 
 class GameController {
 
+    companion object {
+        const val cellRenderSize = 40
+    }
+
     private val state = Property<GameState>(LoadingMap)
 
     val render: ISource<Unit> = state.change.map {  }
-    val size: IPropertyView<Dimension> = state.map {
+    val renderSize: IPropertyView<Dimension> = state.map {
         when (it) {
             LoadingMap, LoadingSprites -> Dimension(60, 60)
-            is Loaded -> Dimension(it.map.width, it.map.height)
+            is Loaded -> Dimension(it.map.width * cellRenderSize, it.map.height * cellRenderSize)
         }
     }
 
@@ -35,7 +39,7 @@ class GameController {
 
     fun render(g: Graphics2D) {
         g.background = JBColor.BLACK
-        g.fillRect(0, 0, size.value.width, size.value.height)
+        g.fillRect(0, 0, renderSize.value.width, renderSize.value.height)
 
         when (val state = state.value) {
             LoadingMap -> {
@@ -47,11 +51,10 @@ class GameController {
                 g.drawString(AtomanBundle.message("game.loading.sprites"), 0, 0)
             }
             is Loaded -> {
-                val cellRenderSize = 40
 
                 for ((y, row) in state.map.cells.withIndex()) {
                     for ((x, cell) in row.withIndex()) {
-                        val sprite = state.sprites[cell.type] ?: error("Cannot find sprite for ${cell.type}.")
+                        val sprite = state.sprites[cell.type] ?: continue
                         g.drawImage(
                             sprite.image,
                             x * cellRenderSize, y * cellRenderSize, (x + 1) * cellRenderSize, (y + 1) * cellRenderSize,

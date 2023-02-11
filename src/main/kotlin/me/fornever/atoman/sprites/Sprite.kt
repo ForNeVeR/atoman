@@ -1,6 +1,8 @@
 package me.fornever.atoman.sprites
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.openapi.rd.util.withIOBackgroundContext
 import com.intellij.util.ui.UIUtil
 import edu.illinois.library.imageio.xpm.XPMImageReaderSpi
@@ -19,7 +21,8 @@ data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedIma
             IIORegistry.getDefaultInstance().registerServiceProvider(XPMImageReaderSpi())
         }
 
-        suspend fun loadAll(): Map<CellType, Sprite> = mapOf(
+        suspend fun loadAll(): Map<CellType, Sprite?> = mapOf(
+            CellType.Empty to null,
             CellType.Wall to Sprite(
                 name = "Wall",
                 image = generateWallImage(),
@@ -31,7 +34,10 @@ data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedIma
                         )
                     )
                 )
-            )
+            ),
+            CellType.Player to load("Pacman-Chomping-Right"), // TODO: Directions
+            CellType.Ghost to load("Red-Ghost-Left"),
+            CellType.Pill to load("Pill")
         )
 
         private fun generateWallImage(): BufferedImage =
@@ -43,7 +49,9 @@ data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedIma
                 }
             }
 
-        private val mapper = ObjectMapper()
+        private val mapper = jacksonObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
         private suspend fun load(name: String): Sprite =
             withIOBackgroundContext {
                 coroutineScope {
