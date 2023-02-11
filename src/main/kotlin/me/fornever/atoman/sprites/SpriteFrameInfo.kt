@@ -1,11 +1,13 @@
 package me.fornever.atoman.sprites
 
-interface SpriteFrameInfo {
-    frame: {
-        x: number;
-        y: number;
-        w: number;
-        h: number;
-    };
-    duration: number;
-}
+data class Frame(
+    val x: Int,
+    val y: Int,
+    val w: Int,
+    val h: Int
+)
+
+data class SpriteFrameInfo(
+    val frame: Frame,
+    val duration: Int
+)

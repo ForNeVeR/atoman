@@ -36,7 +36,7 @@ internal data class Cell(val type: CellType, var timeFromFrameStart: Int = 0, va
 
             if (currentTime >= frame.duration) {
                 currentTime -= frame.duration
-                this.frameIndex = (this.frameIndex + 1) % frames.length
+                this.frameIndex = (this.frameIndex + 1) % frames.size
                 frame = frames[this.frameIndex]
             }
         }

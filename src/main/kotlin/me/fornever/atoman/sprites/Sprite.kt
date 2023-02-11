@@ -5,7 +5,6 @@ import com.intellij.openapi.rd.util.withIOBackgroundContext
 import com.intellij.util.ui.UIUtil
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import java.awt.Image
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -57,9 +56,9 @@ data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedIma
                 }
             }
 
-        fun getFrames(sprite: Sprite) {
+        fun getFrames(sprite: Sprite): List<SpriteFrameInfo> {
             val info = sprite.info
-            return info.frames.keys.map { info.frames[it] }
+            return info.frames.keys.map { info.frames[it]!! }
         }
     }
 }
