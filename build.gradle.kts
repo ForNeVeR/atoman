@@ -31,5 +31,10 @@ tasks {
       include("LICENSE.md")
       into("sprites")
     }
+
+    from("pacmacs/maps/") {
+      include("*.txt")
+      into("maps")
+    }
   }
 }

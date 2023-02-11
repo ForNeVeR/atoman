@@ -1,10 +1,22 @@
 package me.fornever.atoman.map
 
-private data class Map(val cells: List<List<Cell>>, val width: Int, val height: Int) {
+import com.intellij.openapi.rd.util.withIOBackgroundContext
+
+data class GameMap(val cells: List<List<Cell>>, val width: Int, val height: Int) {
 
     companion object {
 
-        fun parse(data: String): Map {
+        suspend fun loadByName(name: String): GameMap {
+            val content = withIOBackgroundContext {
+                GameMap::class.java.classLoader.getResourceAsStream("maps/$name.txt").use {
+                    it ?: error("Cannot find map with name \"$name\".")
+                    it.reader().readText()
+                }
+            }
+            return parse(content)
+        }
+
+        private fun parse(data: String): GameMap {
             val lines = data.split('\n')
             val cells = mutableListOf<MutableList<Cell>>()
             var width = 0
@@ -36,7 +48,7 @@ private data class Map(val cells: List<List<Cell>>, val width: Int, val height: 
                 }
             }
 
-            return Map(
+            return GameMap(
                 cells,
                 width,
                 cells.size

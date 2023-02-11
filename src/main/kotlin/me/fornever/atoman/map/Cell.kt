@@ -2,19 +2,11 @@ package me.fornever.atoman.map
 
 import me.fornever.atoman.sprites.Sprite
 
-internal enum class CellType {
+enum class CellType {
     Empty, Player, Ghost, Wall, Pill
 }
 
-internal data class Cell(val type: CellType, var timeFromFrameStart: Int = 0, var frameIndex: Int = 0) {
-
-    val spriteName = when (type) {
-        CellType.Empty -> null
-        CellType.Player -> "Pacman-Chomping-Right"
-        CellType.Ghost -> "Red-Ghost-Right"
-        CellType.Wall -> "Wall"
-        CellType.Pill -> "Pill"
-    }
+data class Cell(val type: CellType, var timeFromFrameStart: Int = 0, var frameIndex: Int = 0) {
 
     fun update(delta: Int, sprite: Sprite) {
         if (this.type === CellType.Empty) {

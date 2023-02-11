@@ -3,31 +3,38 @@ package me.fornever.atoman.sprites
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.intellij.openapi.rd.util.withIOBackgroundContext
 import com.intellij.util.ui.UIUtil
+import edu.illinois.library.imageio.xpm.XPMImageReaderSpi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import me.fornever.atoman.map.CellType
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
+import javax.imageio.spi.IIORegistry
 
 data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedImage) {
 
     companion object {
 
-        private val mapper = ObjectMapper()
+        init {
+            IIORegistry.getDefaultInstance().registerServiceProvider(XPMImageReaderSpi())
+        }
 
-        val wall = Sprite(
-            name = "Wall",
-            image = getWallImage(),
-            info = SpriteInfo(
-                frames = mapOf(
-                    "Wall 0" to SpriteFrameInfo(
-                        Frame(0, 0, 40, 40),
-                        duration = 0
+        suspend fun loadAll(): Map<CellType, Sprite> = mapOf(
+            CellType.Wall to Sprite(
+                name = "Wall",
+                image = generateWallImage(),
+                info = SpriteInfo(
+                    frames = mapOf(
+                        "Wall 0" to SpriteFrameInfo(
+                            Frame(0, 0, 40, 40),
+                            duration = 0
+                        )
                     )
                 )
             )
         )
 
-        fun getWallImage(): BufferedImage =
+        private fun generateWallImage(): BufferedImage =
             UIUtil.createImage(null, 40, 40, BufferedImage.TYPE_INT_ARGB).apply {
                 for (y in 0..39) {
                     for (x in 0..39) {
@@ -36,7 +43,8 @@ data class Sprite(val name: String, val info: SpriteInfo, val image: BufferedIma
                 }
             }
 
-        suspend fun load(name: String): Sprite =
+        private val mapper = ObjectMapper()
+        private suspend fun load(name: String): Sprite =
             withIOBackgroundContext {
                 coroutineScope {
                     val image = async {

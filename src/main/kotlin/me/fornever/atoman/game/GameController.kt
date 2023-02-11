@@ -1,17 +1,16 @@
 package me.fornever.atoman.game
 
+import com.intellij.ui.JBColor
 import com.intellij.util.ui.UIUtil
 import com.jetbrains.rd.util.reactive.IPropertyView
 import com.jetbrains.rd.util.reactive.ISource
 import com.jetbrains.rd.util.reactive.Property
 import com.jetbrains.rd.util.reactive.map
-import edu.illinois.library.imageio.xpm.XPMImageReaderSpi
-import kotlinx.coroutines.delay
-import java.awt.Color
+import me.fornever.atoman.AtomanBundle
+import me.fornever.atoman.map.GameMap
+import me.fornever.atoman.sprites.Sprite
 import java.awt.Dimension
 import java.awt.Graphics2D
-import javax.imageio.ImageIO
-import javax.imageio.spi.IIORegistry
 
 class GameController {
 
@@ -21,51 +20,47 @@ class GameController {
     val size: IPropertyView<Dimension> = state.map {
         when (it) {
             LoadingMap, LoadingSprites -> Dimension(60, 60)
-            is Loaded -> Dimension(it.size.first, it.size.second)
+            is Loaded -> Dimension(it.map.width, it.map.height)
         }
     }
 
     suspend fun start() {
-        delay(1500) // TODO: Load map here
+        val map = GameMap.loadByName("map01")
+
         state.set(LoadingSprites)
-        delay(1500)
+        val sprites = Sprite.loadAll()
 
-        // TODO: Move to some static place
-        IIORegistry.getDefaultInstance().registerServiceProvider(XPMImageReaderSpi())
-
-        val sprite = this.javaClass.classLoader.getResourceAsStream("sprites/Pacman-Chomping-Right.xpm").use {
-            ImageIO.read(it)
-        }
-
-        var index = 0
-        while (true) {
-            state.set(Loaded(60 to 60, sprite, index))
-            index = (index + 1) % 4
-            delay(500)
-        }
+        state.set(Loaded(map, sprites))
     }
 
     fun render(g: Graphics2D) {
-        g.background = Color.BLACK
+        g.background = JBColor.BLACK
         g.fillRect(0, 0, size.value.width, size.value.height)
 
-        val state = state.value
-        when (state) {
+        when (val state = state.value) {
             LoadingMap -> {
                 g.font = UIUtil.getLabelFont()
-                g.drawString("Loading map…", 0, 0)
+                g.drawString(AtomanBundle.message("game.loading.map"), 0, 0)
             }
             LoadingSprites -> {
                 g.font = UIUtil.getLabelFont()
-                g.drawString("Loading sprites…", 0, 0)
+                g.drawString(AtomanBundle.message("game.loading.sprites"), 0, 0)
             }
             is Loaded -> {
-                // TODO: Load sprites in background
-                g.drawImage(
-                    state.sprite,
-                    0, 0, 40, 40,
-                    40*state.index, 0, 40*(state.index + 1), 40,
-                    null)
+                val cellRenderSize = 40
+
+                for ((y, row) in state.map.cells.withIndex()) {
+                    for ((x, cell) in row.withIndex()) {
+                        val sprite = state.sprites[cell.type] ?: error("Cannot find sprite for ${cell.type}.")
+                        g.drawImage(
+                            sprite.image,
+                            x * cellRenderSize, y * cellRenderSize, (x + 1) * cellRenderSize, (y + 1) * cellRenderSize,
+                            cellRenderSize * cell.frameIndex, 0, cellRenderSize * (cell.frameIndex + 1), cellRenderSize,
+                            null
+                        )
+                    }
+                }
+
             }
         }
     }
