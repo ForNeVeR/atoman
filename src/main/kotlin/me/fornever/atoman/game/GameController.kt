@@ -6,16 +6,19 @@ import com.jetbrains.rd.util.reactive.IPropertyView
 import com.jetbrains.rd.util.reactive.ISource
 import com.jetbrains.rd.util.reactive.Property
 import com.jetbrains.rd.util.reactive.map
+import kotlinx.coroutines.delay
 import me.fornever.atoman.AtomanBundle
 import me.fornever.atoman.map.GameMap
 import me.fornever.atoman.sprites.Sprite
 import java.awt.Dimension
 import java.awt.Graphics2D
+import java.time.Duration
 
 class GameController {
 
     companion object {
         const val cellRenderSize = 40
+        private val delayBetweenUpdates = Duration.ofMillis(500L)
     }
 
     private val state = Property<GameState>(LoadingMap)
@@ -35,6 +38,10 @@ class GameController {
         val sprites = Sprite.loadAll()
 
         state.set(Loaded(map, sprites))
+        while (true) { // TODO: End the game
+            delay(delayBetweenUpdates.toMillis())
+            // TODO: state.set(state.value.update(delayBetweenUpdates))
+        }
     }
 
     fun render(g: Graphics2D) {
